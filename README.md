@@ -1,4 +1,5 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![PyPI version](https://badge.fury.io/py/iprange-python.svg)](https://badge.fury.io/py/iprange-python)
 
 # IPRange
 
@@ -10,11 +11,25 @@ Store IP Ranges in Redis as sorted sets for fast retrieval
 
 ## Usage
 
-    >>> from iprange import IPRange
-    >>> iprange = IPRange()
-    >>> iprange.add('192.168.0.1/24', {'some': 'data', 'more': 'metadata'})
-    >>> iprange.find('192.168.0.20')
-    {'range': '192.168.0.1/24', 'some': 'data', 'more': 'metadata'}
+```python
+from iprange import IPRange
+
+iprange = IPRange()
+
+# Add a new range with some metadata
+iprange.add('192.168.0.1/24', {'some': 'data', 'more': 'metadata'})
+
+# Find the most specific range that contains a specific IP
+iprange.find('192.168.0.20')
+# => {'range': '192.168.0.1/24', 'some': 'data', 'more': 'metadata'}
+
+# Find all ranges that contains a specific IP
+iprange.find_all('192.168.0.20')
+# => [{'range': '192.168.0.1/24', 'some': 'data', 'more': 'metadata'}]
+
+# Delete the range
+iprange.remove('192.168.0.1/24')
+```
 
 ## IPRange in other languages
 
