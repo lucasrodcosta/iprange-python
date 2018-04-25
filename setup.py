@@ -1,8 +1,6 @@
 from os.path import dirname, abspath, join, exists
 from setuptools import setup
 
-from iprange import __version__
-
 long_description = None
 if exists('README.md'):
     with open('README.md') as file:
@@ -14,7 +12,7 @@ setup(
     name='iprange-python',
     author='Lucas Costa',
     author_email='lucasrodcosta@gmail.com',
-    version=__version__,
+    version='0.0.6',
     license='MIT',
     zip_safe=False,
     include_package_data=True,
