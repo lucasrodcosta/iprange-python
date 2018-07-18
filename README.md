@@ -31,6 +31,18 @@ iprange.find_all('192.168.0.20')
 iprange.remove('192.168.0.1/24')
 ```
 
+You can use it with Redis Cluster too:
+
+```python
+from iprange import IPRange
+
+# Requires at least one node for cluster discovery. Multiple nodes is recommended.
+startup_nodes = [{'host': '127.0.0.1', 'port': 16379}]
+iprange = IPRange(redis_cluster=True, startup_nodes=startup_nodes)
+
+# ...
+```
+
 ## IPRange in other languages
 
 - [Ruby](https://github.com/globocom/iprange)

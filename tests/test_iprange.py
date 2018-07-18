@@ -13,17 +13,30 @@ class IPRangeTest(unittest.TestCase):
         self.iprange.remove('router1:192.168.0.1/24')
 
     @patch('redis.StrictRedis')
-    def test_simple_redis_connection(self, mock_strict_redis_client):
+    def test_simple_redis_connection(self, mocked_redis):
         IPRange()
-        mock_strict_redis_client.assert_called_with()
+        mocked_redis.assert_called_with()
 
     @patch('redis.StrictRedis')
-    def test_redis_connection_with_args(self, mock_strict_redis_client):
+    def test_redis_connection_with_args(self, mocked_redis):
         redis_key = 'another_redis_key'
         host, port, db = ['127.0.0.1', 63790, 5]
         iprange = IPRange(redis_key, host=host, port=port, db=db)
         self.assertEquals(redis_key, iprange.redis_key)
-        mock_strict_redis_client.assert_called_with(host=host, port=port, db=5)
+        mocked_redis.assert_called_with(host=host, port=port, db=5)
+
+    @patch('rediscluster.StrictRedisCluster')
+    def test_redis_cluster_connection(self, mocked_redis_cluster):
+        IPRange(redis_cluster=True)
+        mocked_redis_cluster.assert_called_with()
+
+    @patch('rediscluster.StrictRedisCluster')
+    def test_redis_cluster_connection_with_args(self, mocked_redis_cluster):
+        redis_key = 'another_redis_key'
+        startup_nodes = [{'host': '127.0.0.1', 'port': 16379}]
+        iprange = IPRange(redis_key, redis_cluster=True, startup_nodes=startup_nodes)
+        self.assertEquals(redis_key, iprange.redis_key)
+        mocked_redis_cluster.assert_called_with(startup_nodes=startup_nodes)
 
     # should find it back
     def test_successful_find(self):

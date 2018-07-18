@@ -1,11 +1,16 @@
 import redis
+import rediscluster
 from netaddr import IPNetwork
 
 
 class IPRange:
-    def __init__(self, redis_key='ip_table', **kwargs):
+    def __init__(self, redis_key='ip_table', redis_cluster=False, **kwargs):
         self.redis_key = redis_key
-        self.redis = redis.StrictRedis(**kwargs)
+
+        if redis_cluster:
+            self.redis = rediscluster.StrictRedisCluster(**kwargs)
+        else:
+            self.redis = redis.StrictRedis(**kwargs)
 
     def remove(self, range):
         self.redis.execute_command('irem', self.redis_key, range)
