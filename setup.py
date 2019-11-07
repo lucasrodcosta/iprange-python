@@ -12,7 +12,7 @@ setup(
     name='iprange-python',
     author='Lucas Costa',
     author_email='lucasrodcosta@gmail.com',
-    version='0.0.7',
+    version='0.0.8',
     license='MIT',
     zip_safe=False,
     include_package_data=True,
