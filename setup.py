@@ -20,5 +20,6 @@ setup(
     packages=['iprange'],
     url='https://github.com/lucasrodcosta/iprange-python',
     description='Redis as a storage for IP range',
-    long_description=long_description
+    long_description=long_description,
+    long_description_content_type="text/markdown"
 )
