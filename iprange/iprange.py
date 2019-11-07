@@ -13,8 +13,10 @@ class IPRange:
             self.redis = redis.StrictRedis(**kwargs)
 
     def remove(self, range):
-        self.redis.execute_command('irem', self.redis_key, range)
-        self.redis.delete(self.metadata_key(range))
+        pipe = self.redis.pipeline(transaction=False)
+        pipe.execute_command('irem', self.redis_key, range)
+        pipe.delete(self.metadata_key(range))
+        pipe.execute()
 
     def add(self, range, metadata={}):
         ips = IPNetwork(range)
@@ -22,10 +24,14 @@ class IPRange:
         if 'key' in metadata:
             range = "{}:{}".format(metadata['key'], range)
 
-        self.redis.execute_command('iadd', self.redis_key, ips.first, ips.last, range)
+        pipe = self.redis.pipeline(transaction=False)
+
+        pipe.execute_command('iadd', self.redis_key, ips.first, ips.last, range)
         hash = self.metadata_key(range)
         if metadata:
-            self.redis.hmset(hash, metadata)
+            pipe.hmset(hash, metadata)
+
+        pipe.execute()
 
     def find(self, ip):
         all = self.find_all(ip)
