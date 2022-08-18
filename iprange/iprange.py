@@ -8,9 +8,9 @@ class IPRange:
         self.redis_key = redis_key
 
         if redis_cluster:
-            self.redis = rediscluster.StrictRedisCluster(**kwargs)
+            self.redis = rediscluster.RedisCluster(encoding='utf-8', decode_responses=True, **kwargs)
         else:
-            self.redis = redis.StrictRedis(**kwargs)
+            self.redis = redis.StrictRedis(encoding='utf-8', decode_responses=True, **kwargs)
 
     def remove(self, range):
         pipe = self.redis.pipeline(transaction=False)

@@ -5,7 +5,7 @@ function install_deps {
 }
 
 function run {
-    PYTHONPATH=. pytest -vv --cov-report term-missing --cov ./iprange ./tests
+    PYTHONPATH=. coverage run -m pytest ./iprange ./tests
 }
 
 function main {
